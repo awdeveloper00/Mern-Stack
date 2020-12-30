@@ -8,15 +8,16 @@ export const signupController=async(req,res)=>{
   else{
     const salt=await bcrypt.genSalt(10)
     const hashPassword=await bcrypt.hash(req.body.password,salt)
-    const register = new User({
+    const user = new User({
       firstName:req.body.firstName,
       lastName:req.body.lastName,
       email:req.body.email,
+      username:req.body.username,
       password:hashPassword,
     })
     try {
-        await register.save();
-        res.status(201).json(register)
+        await user.save();
+        res.status(201).json(user)
   } catch (error) {
       res.status(404).json({message:error.message})
   }

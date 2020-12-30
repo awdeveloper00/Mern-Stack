@@ -1,34 +1,16 @@
 import User from "../Model/Users.js"
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 export const loginController=async(req,res)=>{
-  const userEmail=await User.findOne({email:req.body.email})
-  const userPass=bcrypt.compare(req.body.password,userEmail.password)
-  if(userEmail&&userPass)
-      {
-        res.status(200).json('Success')
-        console.log('Logged IN')
-      }
-  else
-      { 
-        res.status(400).json({message:error.message})    
-      }
+  const user = await User.findOne({email:req.body.email})
+  if(!user) return res.status(404).json('Email is invalid')
 
-    // const userPassword=bcrypt.compare(req.body.password,userEmail.password)  
-    // if(!userPassword) res.status(400).json('Password')
- 
- 
+  const validPass = await bcrypt.compare(req.body.password,user.password)
+  if(!validPass) return res.status(400).json('Password is invalid')     
 
-    // console.log(User.password,'Test');
-    // const hashPassword=bcrypt.compare(req.body.password,User.password)
-    // const login= new User({
-    //     email:req.body.email,
-    //     password:hashPassword
-    // })
-    // try {
-    //     await User.find(login)
-    //     res.status(200).json('Yess')
-    // } catch (error) {
-    //     res.status(400).json('YBoo')
-    // }
+  const token=jwt.sign({_id:user._id},process.env.TOKEN_SECRET,{expiresIn:'7d'});
+  // res.header('auth-token',token).send(token);
+  res.status(200).json({email:user.email,username:user.username,token:{token}})
+  
 }
