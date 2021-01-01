@@ -7,7 +7,7 @@ export const loginController=async(req,res)=>{
   if(!user) return res.status(404).json('Email is invalid')
 
   const validPass = await bcrypt.compare(req.body.password,user.password)
-  if(!validPass) return res.status(400).json('Password is invalid')     
+  if(!validPass) return res.status(404).json('Password is invalid')     
 
   const token=jwt.sign({_id:user._id},process.env.TOKEN_SECRET,{expiresIn:'7d'});
   // res.header('auth-token',token).send(token);
