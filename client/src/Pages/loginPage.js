@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { loginAPI } from '../API/loginAPI'; 
+import { loginAPI } from '../API/API'; 
 const LoginPage = () =>{
     const [user,setUser]=useState({email:'',password:''})
     const handlerSubmit=(e)=>{

@@ -1,6 +1,6 @@
 
 import { useState } from "react"
-import { signupApi } from "../API/signupApi"
+import { signupApi } from "../API/API"
 import { Button,Grid, Paper, TextField } from '@material-ui/core'
 const SignUp=()=>{
     const [user,setUser]=useState({firstName:'',lastName:'',email:'',username:'',password:''})
